@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var exec = require('child_process').exec;
-var mkdirs = require('mkdirs');
+var Server = require('karma').Server;
+//var mkdirs = require('mkdirs');
 var runSequence = require('run-sequence');
 var nodemon = require('gulp-nodemon');
 var clean = require('gulp-clean');
@@ -73,6 +74,12 @@ gulp.task('compress', function() {
     .pipe(gulp.dest('./dist/js/'))
 });
 
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
 
 gulp.task('set-dev-node-env', function() {
     return process.env.NODE_ENV = 'development';

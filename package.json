@@ -1,10 +1,10 @@
 {
-  "name": "MEAN",
+  "name": "beach",
   "version": "1.0.0",
-  "description": "A MEAN app that allows users to manage contact lists",
+  "description": "beach",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "karma start",
     "start": "node server.js"
   },
   "dependencies": {
@@ -13,6 +13,10 @@
     "mongodb": "^2.1.6"
   },
   "devDependencies": {
+    "angular": "^1.5.8",
+    "angular-animate": "^1.5.8",
+    "angular-mocks": "^1.5.8",
+    "angular-route": "^1.5.8",
     "bootbox": "^4.4.0",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
@@ -20,7 +24,11 @@
     "gulp-git": "^1.11.0",
     "gulp-nodemon": "^2.1.0",
     "gulp-uglify": "^2.0.0",
-    "mkdirs": "0.0.2",
+    "jasmine-core": "^2.4.1",
+    "karma": "^1.2.0",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-jasmine": "^1.0.2",
+    "karma-phantomjs-launcher": "^1.0.1",
     "open": "0.0.5",
     "run-sequence": "^1.2.2"
   }
