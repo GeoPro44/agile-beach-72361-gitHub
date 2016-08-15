@@ -1,0 +1,40 @@
+<div>
+    <h1> Home 123</h1>
+	
+	<p> Hi {{ name }} </p> <br/>
+	<p> Status {{ st }} </p> <br/>
+	
+	<div class="form-group">
+	  <label for="usr">Msg:</label>
+	  <input type="text" class="form-control" ng-model="newMsg" >
+	</div>
+	<button ng-click="save()"> save </button>
+	
+	<button ng-click="test()"> test </button>
+	
+	<table class="table table-bordered table-striped">
+    
+		<thead>
+		  <tr>	  
+			<td>
+			  Message
+			</td>		
+		  </tr>
+		</thead>
+		
+		<tbody>
+		  <tr ng-repeat="m in Messages">
+			<td>{{ m.newMsg }}</td>
+		  </tr>
+		</tbody>
+		
+	 </table>
+    
+	<br/>
+	<br/>
+	
+	<pre>
+		Messages{{ Messages | json }}
+	</pre>
+	
+</div>

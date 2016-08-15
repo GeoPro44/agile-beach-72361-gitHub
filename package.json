@@ -1,0 +1,27 @@
+{
+  "name": "MEAN",
+  "version": "1.0.0",
+  "description": "A MEAN app that allows users to manage contact lists",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "mongodb": "^2.1.6"
+  },
+  "devDependencies": {
+    "bootbox": "^4.4.0",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-git": "^1.11.0",
+    "gulp-nodemon": "^2.1.0",
+    "gulp-uglify": "^2.0.0",
+    "mkdirs": "0.0.2",
+    "open": "0.0.5",
+    "run-sequence": "^1.2.2"
+  }
+}
