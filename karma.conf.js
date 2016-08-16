@@ -35,7 +35,8 @@ module.exports = function(config) {
     },
 	
 	
-	reporters: ['progress'],
+	//reporters: ['progress'],
+	reporters: ['spec'],
 
 
     // web server port

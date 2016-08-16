@@ -1,7 +1,12 @@
 app.controller('HomeController', function ($scope, testService, $http) {    
+	var self = this;  
 	$scope.name = "Geo";
 	$scope.lions = false;
 	$scope.cranes = false;
+	$scope.number;
+	
+	$scope.blah = [{name: 'geo', money: 4}, {name: 'bob', money: 3}];
+	$scope.headerInfo = [];
 	
 	// testService.getStatus().then(function(r) {				
 		// console.log('r: ' + JSON.stringify(r));
@@ -17,8 +22,11 @@ app.controller('HomeController', function ($scope, testService, $http) {
 		});
 	};
 	
-	$scope.test = function() {
+	$scope.doubleIt = function(num) {
+		$scope.number = num * 2;
+	};
 		
+	$scope.test = function() {	
 		
 		// bootbox.prompt({
 		  // title: "What is your name?",
@@ -67,6 +75,9 @@ app.controller('HomeController', function ($scope, testService, $http) {
 		$http.get('/api/msgs').then(function(results) {
 			$scope.Messages = results.data;
 		});
+
+		$scope.headerInfo = _.keys($scope.blah[0]);		
+		//$scope.headerInfo = _.keys({one: 1, two: 2, three: 3});	
 		
 		// $http.get('/contacts').then(function(data) {
 			// $scope.contacts = data;

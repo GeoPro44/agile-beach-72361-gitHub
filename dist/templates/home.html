@@ -8,9 +8,13 @@
 	  <label for="usr">Msg:</label>
 	  <input type="text" class="form-control" ng-model="newMsg" >
 	</div>
-	<button ng-click="save()"> save </button>
+	<button ng-click="save()"> save </button>	
+	<button ng-click="test()"> test </button>	
+	<button class="btn btn-default" ng-csv="blah" csv-header="headerInfo" filename="test.csv" field-separator=",">
+		Export to CSV
+	</button>
 	
-	<button ng-click="test()"> test </button>
+	<br/><br/>
 	
 	<table class="table table-bordered table-striped">
     
@@ -34,6 +38,7 @@
 	<br/>
 	
 	<pre>
+		headerInfo {{ headerInfo | json }}
 		Messages{{ Messages | json }}
 	</pre>
 	

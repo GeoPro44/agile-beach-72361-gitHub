@@ -7,6 +7,7 @@ var nodemon = require('gulp-nodemon');
 var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var git = require('gulp-git');
+var path = require('path');
 
 var dbPath = "./data"
 var commitComment;
@@ -19,7 +20,7 @@ var runCommand = function(command) {
       console.log('exec error: ' + err);
     }
   });
-}
+};
 
 gulp.task("mongo-start", function() {
   //var command = "mongod --fork --dbpath "+paths.dbDir+"/ --logpath "+paths.dbLogs+"/mongo.log";
@@ -50,7 +51,9 @@ gulp.task('clean', function () {
 
 gulp.task('copyLibs', function (done) {
   var libsToCopy = [
-        "node_modules/bootbox/bootbox.js"
+        "node_modules/bootbox/bootbox.js",
+        "node_modules/ng-csv/build/ng-csv.js",
+        "node_modules/underscore/underscore.js"
     ];
   return gulp.src(libsToCopy).pipe(gulp.dest('./dist/lib'));
 });
@@ -65,7 +68,7 @@ gulp.task('copyFiles', function (done) {
 });
 
 gulp.task('compress', function() {
-  gulp.src([
+  return gulp.src([
 	  'src/js/main.js',
 	  'src/**/*.js*'
 	])
@@ -74,12 +77,33 @@ gulp.task('compress', function() {
     .pipe(gulp.dest('./dist/js/'))
 });
 
-gulp.task('test', function (done) {
-  new Server({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true
-  }, done).start();
+
+gulp.task('karma', function() {
+    Server.start({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, function(karmaExitStatus) {
+           if (karmaExitStatus) {
+               process.exit(1);
+           }
+    });
 });
+
+// gulp.task('karma', function(done) {
+    // Server.start({
+        // configFile: __dirname + '/karma.conf.js',
+        // singleRun: true
+    // }, function() {
+        // done();
+    // });
+// });
+
+// gulp.task('karma', function (done) {
+  // new Server({
+    // configFile: __dirname + '/karma.conf.js',
+    // singleRun: true
+  // }, done).start();
+// });
 
 gulp.task('set-dev-node-env', function() {
     return process.env.NODE_ENV = 'development';
@@ -125,6 +149,11 @@ gulp.task('push', function(done) {
 	
     console.log('starting push .... ' + commitComment)
     runSequence('set-prod-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress', 'add', 'commit', 'gitpush');
+});
+
+gulp.task('test', function(done) {
+    console.log('testing....')
+    runSequence('set-dev-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress', 'karma');
 });
 
 gulp.task('dev', function(done) {
