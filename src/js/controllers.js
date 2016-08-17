@@ -93,4 +93,10 @@ app.controller('HomeController', function ($scope, testService, $http) {
 
 app.controller('Page2Controller', function ($scope) {
 	$scope.name = "Geo2";
+	$scope.showModal = false;
+	
+	$scope.test = function() {
+		//console.log('test click');
+		$scope.showModal = true;
+	};
  });
