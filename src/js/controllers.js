@@ -1,4 +1,5 @@
-app.controller('HomeController', function ($scope, testService, $http) {    
+//app.controller('HomeController', function ($scope, testService, $http) {    
+app.controller('HomeController', function ($scope) {    
 	var self = this;  
 	$scope.name = "Geo";
 	$scope.lions = false;
@@ -16,14 +17,14 @@ app.controller('HomeController', function ($scope, testService, $http) {
 	$scope.save = function() {
 		var msg = {'newMsg': $scope.newMsg};
 		
-		$http.post('/api/msgs', msg).then(function() {
-			console.log('saved');
-			init();
-		});
+		// $http.post('/api/msgs', msg).then(function() {
+			// console.log('saved');
+			// init();
+		// });
 	};
 	
 	$scope.doubleIt = function(num) {
-		$scope.number = num * 2;
+		$scope.number = $scope.number * 2;
 	};
 		
 	$scope.test = function() {	
@@ -70,23 +71,13 @@ app.controller('HomeController', function ($scope, testService, $http) {
 		
 	};
 	
-	var init = function() {
-		
-		$http.get('/api/msgs').then(function(results) {
-			$scope.Messages = results.data;
-		});
+	var init = function() {		
+		// $http.get('/api/msgs').then(function(results) {
+			// $scope.Messages = results.data;
+		// });
 
 		$scope.headerInfo = _.keys($scope.blah[0]);		
-		//$scope.headerInfo = _.keys({one: 1, two: 2, three: 3});	
-		
-		// $http.get('/contacts').then(function(data) {
-			// $scope.contacts = data;
-		// });
-	}
-	
-	// $http.get('/api/status').then( function (results) {		
-		// $scope.st = results.data;
-	// });
+	};
 	
 	init();
 });
@@ -94,9 +85,14 @@ app.controller('HomeController', function ($scope, testService, $http) {
 app.controller('Page2Controller', function ($scope) {
 	$scope.name = "Geo2";
 	$scope.showModal = false;
+	$scope.num = 0;
 	
 	$scope.test = function() {
 		//console.log('test click');
 		$scope.showModal = true;
 	};
- });
+	
+	$scope.doubleIt = function() {
+		$scope.num = $scope.num + $scope.num;
+	};
+ });	

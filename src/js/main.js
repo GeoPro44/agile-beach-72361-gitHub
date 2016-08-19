@@ -1,4 +1,5 @@
-var app = angular.module('testApp', ['ngRoute','ngSanitize', 'ngCsv']);
+var app = angular.module('testApp', ['ngRoute','ngSanitize']);
+//var app = angular.module('testApp', ['ngRoute']);
 
 app.controller('NavController', function($scope, $location) {
 	$scope.navClass = function (page) {

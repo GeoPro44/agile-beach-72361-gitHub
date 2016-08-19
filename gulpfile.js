@@ -8,6 +8,7 @@ var clean = require('gulp-clean');
 var concat = require('gulp-concat');
 var git = require('gulp-git');
 var path = require('path');
+var watch = require('gulp-watch');
 
 var dbPath = "./data"
 var commitComment;
@@ -35,6 +36,17 @@ gulp.task("mongo-stop", function() {
   runCommand(command);
 });
 
+gulp.task('watch-src', function(){
+	//gulp.watch(['./**', '!public/dist/*.js'], ['clean', 'copyLibs', 'copyFiles', 'compress']);	
+	watch(['src', '!public/dist/*.js'], function() {
+		gulp.start('build');
+	});	
+});
+
+// gulp.task('watch', function () {
+   // gulp.watch('src/*.tmpl.html', ['build']);
+// });
+
 gulp.task('play', function () {	
     nodemon({
 		script: 'server.js',
@@ -42,7 +54,11 @@ gulp.task('play', function () {
 		env: {
 		  'NODE_ENV': 'development'
 		}
-	});
+	})
+	.on('start', ['watch-src'])
+    .on('restart', function () {
+      console.log('restarted!');
+    });
 });
 
 gulp.task('clean', function () {
@@ -77,7 +93,6 @@ gulp.task('compress', function() {
     .pipe(gulp.dest('./dist/js/'))
 });
 
-
 gulp.task('karma', function() {
     Server.start({
         configFile: __dirname + '/karma.conf.js',
@@ -89,22 +104,6 @@ gulp.task('karma', function() {
     });
 });
 
-// gulp.task('karma', function(done) {
-    // Server.start({
-        // configFile: __dirname + '/karma.conf.js',
-        // singleRun: true
-    // }, function() {
-        // done();
-    // });
-// });
-
-// gulp.task('karma', function (done) {
-  // new Server({
-    // configFile: __dirname + '/karma.conf.js',
-    // singleRun: true
-  // }, done).start();
-// });
-
 gulp.task('set-dev-node-env', function() {
     return process.env.NODE_ENV = 'development';
 });
@@ -113,11 +112,11 @@ gulp.task('set-prod-node-env', function() {
     return process.env.NODE_ENV = 'production';
 });
 
-gulp.task('add', function(){
+gulp.task('gitadd', function(){
   return gulp.src('.').pipe(git.add());
 });
 
-gulp.task('commit', function(){
+gulp.task('gitcommit', function(){
   return gulp.src('.').pipe(git.commit(commitComment));
 });
 
@@ -127,13 +126,16 @@ gulp.task('gitpush', function(){
   });
 });
 
-// gulp.task('build', function(done) {
-    // runSequence('clean', 'copyFiles', 'compress');
-// });
+gulp.task('build', function(done) {
+	return runSequence('clean', 'copyLibs', 'copyFiles', 'compress', function(){
+		console.log('done building');
+        done();
+	});
+});
 
 gulp.task('prod', function(done) {	
     console.log('starting prod ....')
-    runSequence('set-prod-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress');
+    runSequence('set-prod-node-env', 'build');
 });
 
 gulp.task('push', function(done) {
@@ -148,17 +150,17 @@ gulp.task('push', function(done) {
 	}
 	
     console.log('starting push .... ' + commitComment)
-    runSequence('set-prod-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress', 'add', 'commit', 'gitpush');
+    runSequence('set-prod-node-env', 'build', 'gitadd', 'gitcommit', 'gitpush');
 });
 
 gulp.task('test', function(done) {
     console.log('testing....')
-    runSequence('set-dev-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress', 'karma');
+    runSequence('set-dev-node-env', 'build', 'karma');
 });
 
 gulp.task('dev', function(done) {
     console.log('starting dev ....')
-    runSequence('set-dev-node-env', 'clean', 'copyLibs', 'copyFiles', 'compress', 'mongo-start', 'play');
+    runSequence('set-dev-node-env', 'build', 'mongo-start', 'play');
 });
 
 gulp.task('default', ['dev']);
