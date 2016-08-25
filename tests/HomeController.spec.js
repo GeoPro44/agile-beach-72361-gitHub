@@ -11,8 +11,7 @@ describe('Home Controller Test', function() {
 
 		// The new child scope is passed to the controller's constructor argument
 		ctrl = $controller('HomeController', { $scope: $scope });
-	}));	
-	
+	}));		
 	
 	describe('validate the controller', function () {
 		it('tests should be running', function () {
@@ -29,7 +28,6 @@ describe('Home Controller Test', function() {
 	});
 	
 	describe('validate the controller logic', function () {
-
 		it('should double it', function() {
 			$scope.number = 2;
 			$scope.doubleIt();

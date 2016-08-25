@@ -1,0 +1,23 @@
+<div>
+    <h1> Admin  </h1>
+	
+	<span ng-show="isAuthenticated">{{welcome}} - ({{user.id}})</span>
+	<form ng-show="!isAuthenticated" ng-submit="submit()">
+		<input ng-model="user.username" type="text" name="user" placeholder="Username" />
+		<input ng-model="user.password" type="password" name="pass" placeholder="Password" />
+		<input type="submit" value="Login" />
+	</form>
+	<div>{{error}}</div>
+      <div ng-show="isAuthenticated">
+        <a ng-click="getSecureStuff()" href="">Shh, this is private!</a>
+        <br>
+        <div>{{message}}</div>
+        <a ng-click="logout()" href="">Logout</a>
+      </div>
+	
+	
+	<pre>
+		{{ user | json }}
+	</pre>
+</div>
+	

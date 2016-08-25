@@ -1,5 +1,5 @@
 //app.controller('HomeController', function ($scope, testService, $http) {    
-app.controller('HomeController', function ($scope) {    
+app.controller('HomeController', function ($scope, $http) {    
 	var self = this;  
 	$scope.name = "Geo";
 	$scope.lions = false;
@@ -17,10 +17,10 @@ app.controller('HomeController', function ($scope) {
 	$scope.save = function() {
 		var msg = {'newMsg': $scope.newMsg};
 		
-		// $http.post('/api/msgs', msg).then(function() {
-			// console.log('saved');
-			// init();
-		// });
+		$http.post('/api/msgs', msg).then(function() {
+			console.log('saved');
+			init();
+		});
 	};
 	
 	$scope.doubleIt = function(num) {
@@ -72,9 +72,9 @@ app.controller('HomeController', function ($scope) {
 	};
 	
 	var init = function() {		
-		// $http.get('/api/msgs').then(function(results) {
-			// $scope.Messages = results.data;
-		// });
+		$http.get('/api/msgs').then(function(results) {
+			$scope.Messages = results.data;
+		});
 
 		$scope.headerInfo = _.keys($scope.blah[0]);		
 	};
@@ -82,7 +82,7 @@ app.controller('HomeController', function ($scope) {
 	init();
 });
 
-app.controller('Page2Controller', function ($scope) {
+app.controller('Page2Controller', function ($scope, $http) {
 	$scope.name = "Geo2";
 	$scope.showModal = false;
 	$scope.num = 0;
@@ -95,4 +95,80 @@ app.controller('Page2Controller', function ($scope) {
 	$scope.doubleIt = function() {
 		$scope.num = $scope.num + $scope.num;
 	};
+	
+	$scope.getSecureStuff = function() {
+		$http.get('/api/secure/test').then(function(results) {
+			$scope.testData = results.data;
+		});
+	};
  });	
+ 
+ app.controller('AdminController', function ($scope, $http, $window) {
+	$scope.user;
+	
+	$scope.getSecureStuff = function() {
+		$http.get('/api/secure/test').then(function(results) {
+			$scope.message = results.data;
+		});
+	};
+	
+	$scope.submit = function () {
+		$http
+		  .post('/authenticate', $scope.user)
+		  .success(function (data, status, headers, config) {
+			$window.localStorage.token = data.token;
+			$scope.isAuthenticated = true;
+			var encodedProfile = data.token.split('.')[1];
+			$scope.user = JSON.parse(url_base64_decode(encodedProfile));
+			$scope.welcome = 'Welcome ' + $scope.user.first_name + ' ' + $scope.user.last_name;
+		  })
+		  .error(function (data, status, headers, config) {
+			// Erase the token if the user fails to log in
+			delete $window.localStorage.token;
+			$scope.isAuthenticated = false;
+
+			// Handle login errors here
+			$scope.error = 'Error: Invalid user or password';
+			$scope.welcome = '';
+		  });
+	};
+	
+	$scope.logout = function () {
+		$scope.welcome = '';
+		$scope.message = '';
+		$scope.isAuthenticated = false;
+		delete $window.localStorage.token;
+	};
+
+	init = function() {
+		var token = $window.localStorage.token;
+		
+		if (token) {			
+			$scope.isAuthenticated = true;
+			var encodedProfile = token.split('.')[1];
+			$scope.user = JSON.parse(url_base64_decode(encodedProfile));
+			$scope.welcome = 'Welcome ' + $scope.user.first_name + ' ' + $scope.user.last_name;			
+		}
+	};
+	
+	init();
+	
+ });
+ 
+ //this is used to parse the profile
+function url_base64_decode(str) {
+  var output = str.replace('-', '+').replace('_', '/');
+  switch (output.length % 4) {
+    case 0:
+      break;
+    case 2:
+      output += '==';
+      break;
+    case 3:
+      output += '=';
+      break;
+    default:
+      throw 'Illegal base64url string!';
+  }
+  return window.atob(output); //polifyll https://github.com/davidchambers/Base64.js
+}

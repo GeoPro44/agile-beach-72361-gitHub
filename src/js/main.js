@@ -20,6 +20,11 @@ app.config(function ($routeProvider) {
 			controller: 'Page2Controller',
 			templateUrl: 'templates/page2.html'
 		})
+		.when('/admin',
+		{
+			controller: 'AdminController',
+			templateUrl: 'templates/admin.html'
+		})
 		.otherwise({
 			redirectTo:'/'
 		});
