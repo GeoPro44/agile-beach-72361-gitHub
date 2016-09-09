@@ -29,17 +29,17 @@ app.controller('HomeController', function ($scope, $http) {
 		
 	$scope.test = function() {	
 		
-		// bootbox.prompt({
-		  // title: "What is your name?",
-		  // value: "geo",
-		  // callback: function(result) {
-			// if (result === null) {
-			  // console.log("Prompt dismissed");
-			// } else {
-			  // console.log("Hi <b>"+result+"</b>");
-			// }
-		  // }
-		// });
+		/*bootbox.prompt({
+		  title: "What is your name?",
+		  value: "geo",
+		  callback: function(result) {
+			if (result === null) {
+			  console.log("Prompt dismissed");
+			} else {
+			  console.log("Hi <b>"+result+"</b>");
+			}
+		  }
+		});*/
 		
 		bootbox.dialog({
 		  message: "I am a custom dialog",
